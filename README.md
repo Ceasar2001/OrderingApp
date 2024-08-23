@@ -1,4 +1,4 @@
-##Ordering Application Using React Native
+## Ordering Application Using React Native
 
-#To run this project on your'e machine
-#FUCK YOU SELF 
+# To run this project on your'e machine
+# FUCK YOU SELF 
