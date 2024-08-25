@@ -7,18 +7,60 @@ const CreateProductScreen = () => {
 const [name, setName] = useState('');
 const [price, setPrice] = useState('');
 
+const [errors, setErrors] = useState('');
+
+const resetFields = () => {
+    setName('');
+    setPrice('');
+};
+
+const validateInput = () => {
+    if(!name){
+        setErrors('Name is required');
+        return false;
+    }
+    
+    if(!price){
+        setErrors('Price is required');
+        return false;
+    }
+    if (isNaN(parseFloat(price))){
+        setErrors('Price must be a number');
+        return false;
+    }
+    return true;
+};
+
 const onCreate = () => {
-    console.warn("creating product");
+    if(!validateInput()){
+        return;
+    }
+
+    console.warn("creating product", name);
+
+    resetFields();
+    //save on the database
 };
 
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Product Name</Text>
-      <TextInput placeholder='name' style={styles.input}/>
+      <TextInput 
+            value={name} 
+            onChangeText={setName} 
+            placeholder='name' 
+            style={styles.input}
+        />
       
       <Text style={styles.label}>Price ($)</Text>
-      <TextInput placeholder='10.9' style={styles.input} keyboardType='numeric'/>
+      <TextInput
+            value={price}
+            onChangeText={setPrice} 
+            placeholder='10.9' 
+            style={styles.input} 
+            keyboardType='numeric'/>
 
+        <Text style={{ color: 'red '}}>{errors}</Text>
 
       <Button onPress={onCreate} text='Create' />
     </View>
