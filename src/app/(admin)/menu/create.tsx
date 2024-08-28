@@ -4,7 +4,7 @@ import Button from '@/src/components/Button';
 import { defaultPizzaImage } from '@/src/components/ProductListItem';
 import Colors from '@/src/constants/Colors';
 import * as ImagePicker from 'expo-image-picker';
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 
 const CreateProductScreen = () => {
@@ -14,6 +14,8 @@ const [price, setPrice] = useState('');
 const [errors, setErrors] = useState('');
 const [image, setImage] = useState <string | null> (null);
 
+const { id } = useLocalSearchParams();
+const isUpdating = !!id;
 
 const resetFields = () => {
     setName('');
@@ -70,7 +72,7 @@ const pickImage = async () => {
 
   return (
     <View style={styles.container}>
-        <Stack.Screen options={{ title: 'Create product'}}/>
+        <Stack.Screen options={{ title: isUpdating ? 'Update product' : 'Create product'}}/>
 
         <Image source={{ uri: image || defaultPizzaImage }} style={styles.image} />
         <Text onPress={pickImage} style={styles.textButton}>Select Image</Text>
