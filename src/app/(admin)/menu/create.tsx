@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, Image} from 'react-native'
+import { View, Text, StyleSheet, TextInput, Image, Alert} from 'react-native'
 import React, { useState } from 'react'
 import Button from '@/src/components/Button';
 import { defaultPizzaImage } from '@/src/components/ProductListItem';
@@ -40,12 +40,32 @@ const validateInput = () => {
     return true;
 };
 
+
+const onSubmit = () => {
+    if(isUpdating){
+        onUpdateCreate();
+    }else{
+        onCreate();
+    }
+}
+
 const onCreate = () => {
     if(!validateInput()){
         return;
     }
 
     console.warn("creating product", name);
+
+    resetFields();
+    //save on the database
+};
+
+const onUpdateCreate = () => {
+    if(!validateInput()){
+        return;
+    }
+
+    console.warn("Updating product", name);
 
     resetFields();
     //save on the database
@@ -68,6 +88,22 @@ const pickImage = async () => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+  };
+  const onDelete = () => {
+    console.warn("DELETED PRODUCT ");
+}
+
+  const confirmDelete = () => {
+    Alert.alert('Confirm', "are you sure you want to delete this product?", [{
+        text: 'Cancel',
+    },
+    {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: onDelete,
+
+    }
+]);
   };
 
   return (
@@ -95,7 +131,9 @@ const pickImage = async () => {
 
         <Text style={{ color: 'red'}}>{errors}</Text>
 
-      <Button onPress={onCreate} text='Create' />
+      {/* <Button onPress={onSubmit} text={ isUpdating ? "Update product " : 'Create'} /> */}
+      <Button onPress={onSubmit} text={isUpdating ? 'Update' : 'Create'}/>
+      {isUpdating && <Text onPress={confirmDelete} style={styles.textButton}>Delete</Text>}
     </View>
   )
 }
